@@ -29,13 +29,13 @@ class FileLoader(Loader):
             x, fs = sf.read(temp_path)
             f0, sp, ap = pw.wav2world(x, fs, frame_period=FeatureReader.frame_length)
             num_of_frames = int(math.ceil((maxTime - minTime) / float(FeatureReader.frame_length)))
-            print(num_of_frames)
+            # print(num_of_frames)
             for frame, f, s, a in zip(range(1, num_of_frames + 1), f0, sp, ap):
                 features = [frame] + phoneme
-                print(features)
+                # print(features)
                 outpu = [f] + s + a
                 features = np.concatenate((features, outpu))
-                print(features)
+                # print(len(features))
                 file.write(",".join(list(map(str, features))) + "\n")
             # mfcc_feat = mfcc(sig, rate)
             # d_mfcc_feat = delta(mfcc_feat, 2)
