@@ -28,20 +28,20 @@ def main():
     #             data.append([float(l[0]), float(l[1]), float(l[2]), float(l[3]), float(l[4])])
     # FileLoader.acoustic_features_length = 1
     # trainer = Trainer(data, StaticSplitter())
-    # path_to_corpus = "corpus"
-    # file_loader = FileLoader()
-    # loader = DataLoader(file_loader, path_to_corpus, feature_path)
+    path_to_corpus = "/home/obada/corpus"
+    feature_path = "/home/obada/features.txt"
+    file_loader = FileLoader()
+    loader = DataLoader(file_loader, path_to_corpus, feature_path)
     # data = loader.get_data()
     # with open("/home/obada/features.txt", "w") as f:
     #    for row in data:
     #        f.write(",".join(row))
-    path_to_trained_model = "model.h5"
-    feature_path = "/home/obada/features.txt"
-    data = FeatureReader.read(feature_path)
-    trainer = Trainer(data, StaticSplitter(num_of_out_features=len(data[0]) - 8))
-    #trainer.train()
-    #trainer.evaluate()
-    #trainer.save_model(path_to_trained_model)
+    # path_to_trained_model = "model.h5"
+    # data = FeatureReader.read(feature_path)
+    # trainer = Trainer(data, StaticSplitter(num_of_out_features=len(data[0]) - 8))
+    # trainer.train()
+    # trainer.evaluate()
+    # trainer.save_model(path_to_trained_model)
 
 
 main()

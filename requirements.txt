@@ -1,6 +1,8 @@
 numpy
 tensorflow
 keras
-python_speech_features
 textgrid
 matplotlib
+argparse
+cython
+pysoundfile
