@@ -25,6 +25,7 @@ class FileLoader(Loader):
         for interval, phoneme in zip(intervals, phonemes):
             minTime = interval.minTime
             maxTime = interval.maxTime
+            print(minTime)
             FileLoader.cut(wav_path, minTime, maxTime, temp_path)
             x, fs = sf.read(temp_path)
             f0, sp, ap = pw.wav2world(x, fs, frame_period=FeatureReader.frame_length)

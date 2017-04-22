@@ -4,11 +4,11 @@ import soundfile as sf
 
 
 class SignalConnector:
-    def connectFromSignals(self, signals, smoother_window_type=WindowType.hamming, window_length=40):
+    def connect_from_signals(self, signals, smoother_window_type=WindowType.hamming, window_length=40):
         signal = [item for sublist in signals for item in sublist]
         return SignalSmoother(signal).smooth(smoother_window_type, window_length)
 
-    def connectFromFiles(self, files, smoother_window_type=WindowType.hamming, window_length=40):
+    def connect_from_files(self, files, smoother_window_type=WindowType.hamming, window_length=40):
         signals = []
         for file in files:
             data, _ = sf.read(file)
