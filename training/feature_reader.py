@@ -3,7 +3,7 @@ import pyworld as pw
 
 class FeatureReader:
     # frame_length = pw.default_frame_period
-    frame_length = 0.03
+    frame_length = 30
 
     @staticmethod
     def read(file_path):
