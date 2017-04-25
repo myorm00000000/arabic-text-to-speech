@@ -46,8 +46,10 @@ class FeatureExtractor:
                                1 if phone in shortVowels else 0,
                                1 if phone in longVowels else 0,
                                1 if phone in geminatedConsonants else 0,
-                               1 if i[j][-1] == '\'' else 0,
+                               1 if i[j][-1] == '\'' else 0,  # stressed
                                j,
+                               1 if j < len(i) - 1 and i[j + 1][-1] == '\'' else 0,  # next stressed
+                               1 if j > 0 and i[j - 1][-1] == '\'' else 0,  # prev stressed
                                syllab_index,
                                phone_index])
         self.features = result

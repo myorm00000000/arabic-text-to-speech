@@ -1,9 +1,6 @@
-from data_loader import DataLoader
+from features.features_writer import FeaturesWriter
 
-from file_loader import FileLoader
-from splitter.static_splitter import StaticSplitter
-from training.trainer import Trainer
-from training.feature_reader import FeatureReader
+from features.feature_writer import FeatureWriter
 
 
 def main():
@@ -30,8 +27,8 @@ def main():
     # trainer = Trainer(data, StaticSplitter())
     path_to_corpus = "/home/obada/corpus"
     feature_path = "/home/obada/features.txt"
-    file_loader = FileLoader()
-    loader = DataLoader(file_loader, path_to_corpus, feature_path)
+    file_loader = FeatureWriter()
+    writer = FeaturesWriter(file_loader, path_to_corpus, feature_path)
     # data = loader.get_data()
     # with open("/home/obada/features.txt", "w") as f:
     #    for row in data:
