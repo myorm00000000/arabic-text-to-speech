@@ -4,15 +4,6 @@ import matplotlib.patches as mpatches
 
 
 class AccLossPlotter(Callback):
-    """Plot training Accuracy and Loss values on a Matplotlib graph. 
-
-    The graph is updated by the 'on_epoch_end' event of the Keras Callback class
-
-    # Arguments
-        graphs: list with some or all of ('acc', 'loss')
-        save_graph: Save graph as an image on Keras Callback 'on_train_end' event 
-
-    """
 
     def __init__(self, graphs=None, save_graph=False):
         super().__init__()
