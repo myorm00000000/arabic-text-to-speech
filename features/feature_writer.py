@@ -18,6 +18,7 @@ class FeatureWriter(Writer):
         grid = TextGrid("test")
         grid.read(grid_path)
         intervals = grid.getList("phones")[0].intervals
+        intervals = [i for i in intervals if i.text != "sil"]
         with open(text_path, 'r') as ff:
             (_, _, _, d) = phonetise(ff.read(), arabic=False)
             phonemes = FeatureExtractor(d).get_features()
