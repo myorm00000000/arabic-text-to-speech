@@ -1,6 +1,7 @@
 from features.features_writer import FeaturesWriter
-
 from features.feature_writer import FeatureWriter
+from duration.duration_writer import DurationWriter
+from duration.durations_writer import DurationsWriter
 
 
 def main():
@@ -26,9 +27,10 @@ def main():
     # FileLoader.acoustic_features_length = 1
     # trainer = Trainer(data, StaticSplitter())
     path_to_corpus = "/home/obada/corpus"
-    feature_path = "/home/obada/features.txt"
-    file_loader = FeatureWriter()
-    writer = FeaturesWriter(file_loader, path_to_corpus, feature_path)
+    feature_path = "/home/obada/durations.txt"
+    file_writer = DurationWriter()
+    writer = DurationsWriter(file_writer, path_to_corpus, feature_path)
+    writer.write()
     # data = loader.get_data()
     # with open("/home/obada/features.txt", "w") as f:
     #    for row in data:

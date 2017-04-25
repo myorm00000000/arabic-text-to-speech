@@ -14,5 +14,6 @@ class DurationsWriter:
         ite = zip(sorted(os.listdir(wav_base)), sorted(os.listdir(grid_base)), sorted(os.listdir(text_base)))
         with open(self.file_path, "w") as file:
             for wav, grid, text in ite:
+                print(wav)
                 self.writer.write(wav_path=wav_base + wav, text_path=text_base + text, grid_path=grid_base + grid,
                                   file=file)
