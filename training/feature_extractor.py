@@ -60,20 +60,19 @@ class FeatureExtractor:
         for i in range(len(tags)):
             tag = tags[i]
             word = data[i]
-            tag_index = FeatureExtractor.get_tag_index(tag)
-            one_hot_tag_index = [0] * (len(tags_type) + 1)
+            current_hot_tag_index = [0] * (len(tags_type) + 1)
             prev_hot_tag_index = [0] * (len(tags_type) + 1)
             next_hot_tag_index = [0] * (len(tags_type) + 1)
-            one_hot_tag_index[tag_index] = 1
+            tag_index = FeatureExtractor.get_tag_index(tag)
+            current_hot_tag_index[tag_index] = 1
             if i >= 1:
                 prev_hot_tag_index[FeatureExtractor.get_tag_index(tags[i - 1])] = 1
             else:
                 prev_hot_tag_index[len(tags_type)] = 1
             if i <= len(tags) - 1:
-                prev_hot_tag_index[FeatureExtractor.get_tag_index(tags[i + 1])] = 1
+                next_hot_tag_index[FeatureExtractor.get_tag_index(tags[i + 1])] = 1
             else:
-                prev_hot_tag_index[len(tags_type)] = 1
-
+                next_hot_tag_index[len(tags_type)] = 1
             # syllable = FeatureExtractor.syllabify(data[i])
             # indices = FeatureExtractor.divide(syllable)
             for j in range(len(word)):
@@ -90,7 +89,9 @@ class FeatureExtractor:
                                1 if j > 0 and word[j - 1][-1] == '\'' else 0,  # prev stressed
                                syllab_index,
                                phone_index]
-                              + one_hot_tag_index)
+                              + current_hot_tag_index
+                              + prev_hot_tag_index
+                              + next_hot_tag_index)
         return result
 
     def extract_from_sentences(self, data, arabic=True):
