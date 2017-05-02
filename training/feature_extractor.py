@@ -1,5 +1,6 @@
 from nltk.tag.stanford import StanfordPOSTagger
-from phoneme.phonetise import buckwalterToArabic
+from nltk.tokenize import sent_tokenize
+from phoneme.phonetise import buckwalterToArabic, phonetise
 
 consonants = [
     "r", "g", "y", "G",
@@ -36,7 +37,10 @@ tags_type = ["CC", "CD", "CONJ+NEG_PART", "DT", "FW", "IN", "JJ", "NN", "NNP", "
 
 
 class FeatureExtractor:
-    def __init__(self, data):
+    def __init__(self):
+        self.features = []
+
+    def extract_from_sentence(self, data):
         result = []
         t = [item for sublist in data for item in sublist]
         syllable = FeatureExtractor.syllabify(t)
@@ -51,29 +55,53 @@ class FeatureExtractor:
         arabic = buckwalterToArabic(arabic.strip())
         tags = st.tag(arabic)
         tags = [i[1].split("/")[1] for i in tags]
-        for tag in tags:
-            print(tag[1].split("/")[1])
-        for i, tag in zip(data, tags):
-            tag_index = tags_type.index(tag)
-            one_hot_tag_index = [0] * len(tags_type)
+        # for tag in tags:
+        #    print(tag[1].split("/")[1])
+        for i in range(len(tags)):
+            tag = tags[i]
+            word = data[i]
+            tag_index = FeatureExtractor.get_tag_index(tag)
+            one_hot_tag_index = [0] * (len(tags_type) + 1)
+            prev_hot_tag_index = [0] * (len(tags_type) + 1)
+            next_hot_tag_index = [0] * (len(tags_type) + 1)
             one_hot_tag_index[tag_index] = 1
+            if i >= 1:
+                prev_hot_tag_index[FeatureExtractor.get_tag_index(tags[i - 1])] = 1
+            else:
+                prev_hot_tag_index[len(tags_type)] = 1
+            if i <= len(tags) - 1:
+                prev_hot_tag_index[FeatureExtractor.get_tag_index(tags[i + 1])] = 1
+            else:
+                prev_hot_tag_index[len(tags_type)] = 1
+
             # syllable = FeatureExtractor.syllabify(data[i])
             # indices = FeatureExtractor.divide(syllable)
-            for j in range(0, len(i)):
-                phone = i[j].replace('\'', '')
+            for j in range(len(word)):
+                phone = word[j].replace('\'', '')
                 syllab_index, phone_index = FeatureExtractor.phone_in_syllable(indices, j)
                 result.append([1 if phone in consonants else 0,
                                1 if phone in shortVowels else 0,
                                1 if phone in longVowels else 0,
                                1 if phone in geminatedConsonants else 0,
-                               1 if i[j][-1] == '\'' else 0,  # stressed
+                               1 if word[j][-1] == '\'' else 0,  # stressed
                                j,
-                               1 if j < len(i) - 1 and i[j + 1][-1] == '\'' else 0,  # next stressed
-                               1 if j > 0 and i[j - 1][-1] == '\'' else 0,  # prev stressed
+                               i,
+                               1 if j < len(word) - 1 and word[j + 1][-1] == '\'' else 0,  # next stressed
+                               1 if j > 0 and word[j - 1][-1] == '\'' else 0,  # prev stressed
                                syllab_index,
                                phone_index]
                               + one_hot_tag_index)
-        self.features = result
+        return result
+
+    def extract_from_sentences(self, data, arabic=True):
+        result = []
+        sentences = sent_tokenize(data, language="arabic")
+        for sentence in sentences:
+            (_, _, _, pho) = phonetise(sentence, arabic=arabic)
+            temp = self.extract_from_sentence(pho)
+            for word in temp:
+                result.append(word)
+        return result
 
     @staticmethod
     def syllabify(sequence):
@@ -121,5 +149,6 @@ class FeatureExtractor:
                 return len(t)
         return 0
 
-    def get_features(self):
-        return self.features
+    @staticmethod
+    def get_tag_index(tag):
+        return tags_type.index(tag)

@@ -461,7 +461,7 @@ def phonetise(text, arabic=True):
         # Add sound file name back
         utterancesPronuncations[-1] = utterancesPronuncations[-1].strip() + u" sil"
         utterancesPronuncationsWithBoundaries[-1] = utterancesPronuncationsWithBoundaries[-1].strip() + u" sil"
-    #prons.pop()
+    # prons.pop()
     return utterancesPronuncationsWithBoundaries, utterancesPronuncations, result, prons
 
 

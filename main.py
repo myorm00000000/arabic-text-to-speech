@@ -3,6 +3,8 @@ from features.feature_writer import FeatureWriter
 from duration.duration_writer import DurationWriter
 from duration.durations_writer import DurationsWriter
 from nltk.tag.stanford import StanfordPOSTagger
+from phoneme.phonetise import buckwalterToArabic, phonetise
+from nltk.tokenize import sent_tokenize
 
 
 def main():
@@ -49,7 +51,11 @@ def main():
     # trainer = Trainer(data, StaticSplitter(num_of_out_features=len(data[0]) - 8))
     # trainer.train()
     # trainer.evaluate()
+    # from phoneme.phonetise import phonetise
+    # (_, _, _, d) = phonetise("كيف حالك.أهلا بك")
+    # print(d)
+    sentences = sent_tokenize("hi, hello dude.shit")
+    for i in sentences:
+        print(i)
     # trainer.save_model(path_to_trained_model)
-
-
 main()
