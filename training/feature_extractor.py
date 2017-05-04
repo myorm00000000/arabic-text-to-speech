@@ -40,7 +40,7 @@ class FeatureExtractor:
     def __init__(self):
         self.features = []
 
-    def extract_from_sentence(self, data):
+    def extract_from_sentence(self, data, sentence):
         result = []
         t = [item for sublist in data for item in sublist]
         syllable = FeatureExtractor.syllabify(t)
@@ -48,12 +48,7 @@ class FeatureExtractor:
         tagger_path = "/home/obada/Downloads/stanford-postagger-full-2016-10-31/models/arabic.tagger"
         jar_path = "/home/obada/Downloads/stanford-postagger-full-2016-10-31/stanford-postagger.jar"
         st = StanfordPOSTagger(model_filename=tagger_path, path_to_jar=jar_path)
-        temp = list(map("".join, data))
-        arabic = ""
-        for i in temp:
-            arabic += i + " "
-        arabic = buckwalterToArabic(arabic.strip())
-        tags = st.tag(arabic)
+        tags = st.tag(sentence)
         tags = [i[1].split("/")[1] for i in tags]
         # for tag in tags:
         #    print(tag[1].split("/")[1])
@@ -99,7 +94,7 @@ class FeatureExtractor:
         sentences = sent_tokenize(data, language="arabic")
         for sentence in sentences:
             (_, _, _, pho) = phonetise(sentence, arabic=arabic)
-            temp = self.extract_from_sentence(pho)
+            temp = self.extract_from_sentence(pho, sentence)
             for word in temp:
                 result.append(word)
         return result
